@@ -1,0 +1,30 @@
+name: Update News RSS
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # 每 10 分鐘自動執行
+  workflow_dispatch: # 支援手動觸發按鈕
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 賦予寫入 news.txt 的權限
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run Fetch Script
+        run: python fetch.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add news.txt
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update news" && git push)
