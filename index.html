@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
-  <title>即時新聞走馬燈 - 企業藍色版</title>
+  <title>即時新聞走馬燈 - 企業藍色超慢版</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -13,37 +13,40 @@
     }
     .ticker-container {
       width: 100vw; height: 60px;
-      /* 使用 LOGO 深藍色 (#004098) 作為背景底色，並加入漸層 */
+      /* LOGO 企業深藍漸層底色 */
       background: linear-gradient(180deg, rgba(0, 64, 152, 0.95) 0%, rgba(0, 32, 76, 0.98) 100%);
       color: #ffffff;
       display: flex; align-items: center;
       box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
-      /* 使用 LOGO 深藍色作為上邊框顏色 */
-      border-top: 3px solid #004098;
+      border-top: 3px solid #00ADEF;
     }
     .badge {
-      /* 使用 LOGO 亮藍色 (#00ADEF) 作為標籤背景色 */
+      /* LOGO 亮藍色標籤 */
       background: linear-gradient(135deg, #00ADEF 0%, #0087cb 100%);
       color: #ffffff;
-      padding: 0 15px; height: 100%;
+      padding: 0 25px; height: 100%;
       display: flex; align-items: center; justify-content: center;
       font-weight: bold; font-size: 20px; white-space: nowrap;
       z-index: 10; box-shadow: 4px 0 10px rgba(0,0,0,0.4);
-    }
-    .badge img {
-      height: 40px; /* 調整 LOGO 高度 */
-      width: auto;
-      margin-right: 10px; /* LOGO 與文字的間距 */
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); /* 給 LOGO 加點陰影，更立體 */
+      letter-spacing: 2px;
     }
     .marquee-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
     .marquee-content {
       display: inline-block; white-space: nowrap;
       padding-left: 100vw;
-      /* 將時間改為 100s，大幅放慢速度 */
-      animation: marquee 100s linear infinite;
+      /* 時間改為 180 秒，速度極度平緩超慢 */
+      animation: marquee 180s linear infinite;
       font-size: 24px; font-weight: 500; line-height: 60px;
     }
+    
+    /* 每條新聞的分隔符號與超寬間距 */
+    .separator {
+      color: #00ADEF;
+      margin: 0 60px; /* 大幅加寬新聞之間的距離 */
+      font-weight: bold;
+      font-size: 18px;
+    }
+
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
@@ -52,12 +55,7 @@
 </head>
 <body>
   <div class="ticker-container">
-    <div class="badge">
-      <!-- 替換為您的公司 LOGO 網址 (請確認檔名是否正確) -->
-      <img src="https://bctechbctv.github.io/bctv/logo.png" alt="Company Logo">
-      <!-- 文字修改為「即時新聞」 -->
-      即時新聞
-    </div>
+    <div class="badge">即時新聞</div>
     <div class="marquee-wrapper">
       <div class="marquee-content" id="news-text">正在載入新聞...</div>
     </div>
@@ -70,7 +68,10 @@
         if (res.ok) {
           const text = await res.text();
           if (text.trim()) {
-            document.getElementById('news-text').innerText = text;
+            // 將原本以 ' ✦ ' 分隔的新聞，用自訂樣式拉開間距
+            const newsItems = text.split(' ✦ ');
+            const formattedHTML = newsItems.join('<span class="separator">◆</span>');
+            document.getElementById('news-text').innerHTML = formattedHTML;
           }
         }
       } catch (e) {
@@ -78,7 +79,7 @@
       }
     }
     loadNews();
-    setInterval(loadNews, 30000); // 每 30 秒自動刷新文字內容
+    setInterval(loadNews, 30000); // 每 30 秒自動刷新
   </script>
 </body>
 </html>
