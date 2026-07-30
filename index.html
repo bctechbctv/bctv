@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
-  <title>RTHK News Ticker</title>
+  <title>即時新聞走馬燈 - 企業藍色版</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -12,26 +12,37 @@
       font-family: "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
     }
     .ticker-container {
-      width: 100vw; height: 54px;
-      background: rgba(15, 23, 42, 0.95);
+      width: 100vw; height: 60px;
+      /* 使用 LOGO 深藍色 (#004098) 作為背景底色，並加入漸層 */
+      background: linear-gradient(180deg, rgba(0, 64, 152, 0.95) 0%, rgba(0, 32, 76, 0.98) 100%);
       color: #ffffff;
       display: flex; align-items: center;
       box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
-      border-top: 3px solid #ef4444;
+      /* 使用 LOGO 深藍色作為上邊框顏色 */
+      border-top: 3px solid #004098;
     }
     .badge {
-      background: #dc2626; color: #ffffff;
-      padding: 0 18px; height: 100%;
+      /* 使用 LOGO 亮藍色 (#00ADEF) 作為標籤背景色 */
+      background: linear-gradient(135deg, #00ADEF 0%, #0087cb 100%);
+      color: #ffffff;
+      padding: 0 15px; height: 100%;
       display: flex; align-items: center; justify-content: center;
-      font-weight: bold; font-size: 18px; white-space: nowrap;
+      font-weight: bold; font-size: 20px; white-space: nowrap;
       z-index: 10; box-shadow: 4px 0 10px rgba(0,0,0,0.4);
+    }
+    .badge img {
+      height: 40px; /* 調整 LOGO 高度 */
+      width: auto;
+      margin-right: 10px; /* LOGO 與文字的間距 */
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); /* 給 LOGO 加點陰影，更立體 */
     }
     .marquee-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
     .marquee-content {
       display: inline-block; white-space: nowrap;
       padding-left: 100vw;
-      animation: marquee 55s linear infinite;
-      font-size: 21px; font-weight: 500; line-height: 54px;
+      /* 將時間改為 100s，大幅放慢速度 */
+      animation: marquee 100s linear infinite;
+      font-size: 24px; font-weight: 500; line-height: 60px;
     }
     @keyframes marquee {
       0% { transform: translateX(0); }
@@ -41,7 +52,12 @@
 </head>
 <body>
   <div class="ticker-container">
-    <div class="badge">香港電台 即時新聞</div>
+    <div class="badge">
+      <!-- 替換為您的公司 LOGO 網址 (請確認檔名是否正確) -->
+      <img src="https://bctechbctv.github.io/bctv/logo.png" alt="Company Logo">
+      <!-- 文字修改為「即時新聞」 -->
+      即時新聞
+    </div>
     <div class="marquee-wrapper">
       <div class="marquee-content" id="news-text">正在載入新聞...</div>
     </div>
@@ -62,7 +78,7 @@
       }
     }
     loadNews();
-    setInterval(loadNews, 30000); // 每 30 秒自動刷新
+    setInterval(loadNews, 30000); // 每 30 秒自動刷新文字內容
   </script>
 </body>
 </html>
