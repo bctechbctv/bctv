@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <title>RTHK News Ticker</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      background: transparent;
+      overflow: hidden;
+      font-family: "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+    .ticker-container {
+      width: 100vw; height: 54px;
+      background: rgba(15, 23, 42, 0.95);
+      color: #ffffff;
+      display: flex; align-items: center;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
+      border-top: 3px solid #ef4444;
+    }
+    .badge {
+      background: #dc2626; color: #ffffff;
+      padding: 0 18px; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 18px; white-space: nowrap;
+      z-index: 10; box-shadow: 4px 0 10px rgba(0,0,0,0.4);
+    }
+    .marquee-wrapper { flex: 1; overflow: hidden; white-space: nowrap; }
+    .marquee-content {
+      display: inline-block; white-space: nowrap;
+      padding-left: 100vw;
+      animation: marquee 55s linear infinite;
+      font-size: 21px; font-weight: 500; line-height: 54px;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="ticker-container">
+    <div class="badge">香港電台 即時新聞</div>
+    <div class="marquee-wrapper">
+      <div class="marquee-content" id="news-text">正在載入新聞...</div>
+    </div>
+  </div>
+
+  <script>
+    async function loadNews() {
+      try {
+        const res = await fetch('news.txt?t=' + new Date().getTime());
+        if (res.ok) {
+          const text = await res.text();
+          if (text.trim()) {
+            document.getElementById('news-text').innerText = text;
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    loadNews();
+    setInterval(loadNews, 30000); // 每 30 秒自動刷新
+  </script>
+</body>
+</html>
